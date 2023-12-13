@@ -1,201 +1,205 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox
 
-i = 0
-husbando = str
-waifu = str
-sex_choice = str
-love = str
-def result_husbando():
-    sex_choice = husbando
-def result_waifu():
-    sex_choice = waifu
-def result_sus():
-    import random
-def result_secret():
-    result = name_entry[::-1]
-def name_button(): 
-    window2.mainloop()
-    # get the content of the name entry
-    if name == None:
-        result_sus()
-    else:
-        window2_label2['text'] = name
-def begin_quiz():
-    window3()
-def red_flag():
-    i = i + 1
-def next_question1():
-    window4()
-def next_question2():
-    window5()
-def next_question3():
-    window6()
-def next_question4():
-    window7()
-def next_question5():
-    window8()
-def next_question6():
-    window9()
-def next_question7():
-    window10()
-def next_question8():
-    window11()
-def next_question9():
-    window12()
-def end_quiz():
-    result_window()
-def result_answer():
-    if sex_choice == husbando:
-        if i == 0:
-            love = 'Arthur Pendragon'
-        elif i == 1:
-            love = 'Loyd Forger'
-        elif i == 2:
-            love = 'Levi Ackerman'
-        elif i == 3:
-            love = 'Kyo Sohma'
-        elif i == 4:
-            love = 'Kakashi Hatake'
-        elif i == 5:
-            love = 'Takumi Usui'
-        elif i == 6:
-            love = 'Tomoe'
-        elif i == 7:
-            love = 'Inuyasha'
-        elif i == 8:
-            love = 'Howl Jenkins Pendragon'
+class QuizApp:
+    def __init__(self, master):
+        #The master window of the program
+        self.master = master
+        self.master.title("Quiz")
+
+        # Variables
+        self.name_var = tk.StringVar()
+        self.Preference = 0
+
+        # Create entry widgets for name and age
+        self.create_name_widgets()
+        self.create_preference_widgets()
+
+        # Create buttons to start the quiz
+        waifu_button = tk.Button(master, text="Waifu", command=lambda: (self.start_quiz(), self.waifu_preference()))
+        waifu_button.pack(pady=2)
+
+        husbando_button = tk.Button(master, text="Husbando", command=self.start_quiz)
+        husbando_button.pack(pady=2)
+
+        #extra easter egg button for use in full version
+        easter_egg_button = tk.Button(master, text="Ewww", command=self.display_reversed_name)
+        easter_egg_button.pack(pady=2)
+
+        # Quiz data
+        self.setup_quiz_data()
+
+    def create_name_widgets(self):
+        #label for the first question
+        name_label = tk.Label(self.master, text="What is your name?")
+        name_label.pack(pady=10)
+        name_entry = tk.Entry(self.master, textvariable=self.name_var)
+        name_entry.pack(pady=5)
+
+    def create_preference_widgets(self):
+        #label for the second question
+        preference_label = tk.Label(self.master, text="Which do you prefer?")
+        preference_label.pack(pady=10)
+
+    def setup_quiz_data(self):
+        #Quiz questions can be changed to match any criteria
+        self.questions = [
+            "Are you normally dishonest?",
+            "Is physical appearance important?",
+            "Is money more important than your relationship?",
+            "Is cool better than cute?",
+            "Is it important for your significant other to be calmer than you?",
+            "Are good and evil always clearly defined?",
+            "Do you want to or do you have children?",
+            "Is reaching your goals more important than maintaining your relationship?",
+            "Would you commit a crime for your significant other?",
+            "Honestly though does your significant other's sex really matter?",
+        ]
+
+        #Answers table the answers must be within brackets and in the correct order
+        self.answers = ["Yes"] * 10
+
+        #The list of results from the answers to; name input, preference, and quiz questions are added and then referenced to in this table
+        self.PreferenceList = ["Artoria Pendragon", "Loyd Forger", "Levi Ackerman", "Kyo Sohma", "Kakashi Hatake",
+                               "Takumi Usui", "Tomoe", "Inuyasha", "Howl Jenkins Pendragon", "Gojo Satoru",
+                               "Astolfo", "Hinata Hyuga", "Ochaco Uraraka", "Asuna Yuuki", "Mikasa Akerman",
+                               "Kaguya Shinomiya", "Rin Tohsaka", "Rias Gremory", "Nami", "Makima",
+                               "Red", "Blue", "Green", "Pink", "Orange",
+                               "Yellow", "Black", "White", "Purple", "Brown",
+                               "Cyan","Lime","Maroon","Rose","Banana",
+                               "Gray","Tan","Coral","Fortegreen","Olive","Yellow(color bug)"]
+        
+        #The descriptions to the results from the preference table
+        self.DescriptionsList = ["The king of knights, I honestly can't blame you",
+                                 "World class spy and perfect father",
+                                 "Slaying titans with finesse, and he's hot",
+                                 "Just don't take the bracelet off I guess",
+                                 "He can see right through you so calm down",
+                                 "Can you keep a secret? He can.",
+                                 "A fox yokai?! Sheeeeesh",
+                                 "He will always love you...even after you reincarnate",
+                                 "M'Lord",
+                                 "It'll all be fine, after all you are kind of weak",
+                                 "Next level pretty boy",
+                                 "But how though?",
+                                 "Floating on cloud 9",
+                                 "The perfect co-op partner",
+                                 "Don't read the last chapter of the manga",
+                                 "Love is war",
+                                 "A mage and a Tsundere",
+                                 "A kind devil?",
+                                 "Keep your wallet close",
+                                 "Well dang better luck next time",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus",
+                                 "No name? ngl kinda sus, but at least you got the rare one"]
+
+        # Counter for correct answers
+        self.correct_count = 0
+
+    def reverse_name(self):
+        #reverses the name input for use in easter egg feature
+        self.name = self.name_var.get()
+        self.reversed_name = self.name[::-1]
+
+    def display_reversed_name(self):
+        #The easter egg feature its better in the full version
+        self.reverse_name()
+        messagebox.showwarning("Easter Egg", f"Your perfect match is {self.reversed_name}")
+        self.master.destroy()
+
+    def start_quiz(self):
+        # Get user input
+        name = self.name_var.get()
+
+        # Check if name is provided
+        if name:
+            # Open quiz window
+            quiz_window = tk.Toplevel(self.master)
+            quiz_window.title("Answer with Yes or No")
+            answer_entries = []
+
+            # Create labels for questions and entry widgets for answers
+            for i in range(10):
+                question_label = tk.Label(quiz_window, text=self.questions[i])
+                question_label.pack(pady=5)
+
+                answer_entry = tk.Entry(quiz_window)
+                answer_entry.pack(pady=5)
+                answer_entries.append(answer_entry)
+
+            # Create a button to submit answers
+            submit_button = tk.Button(quiz_window, text="Submit Answers", command=lambda: self.check_answers(answer_entries))
+            submit_button.pack(pady=10)
+
         else:
-            love = 'Gojo Satoru'
-    else:
-        if i == 0:
-            love = 'Astolfo'
-        elif i == 1:
-            love = 'Hinata Hyuga'
-        elif i == 2:
-            love = 'Ochako Uraraka'
-        elif i == 3:
-            love = 'Asuna'
-        elif i == 4:
-            love = 'Mikasa Akerman'
-        elif i == 5:
-            love = 'Kaguya Shinomiya'
-        elif i == 6:
-            love = 'Rin Tohsaka'
-        elif i == 7:
-            love = 'Rias Gremory'
-        elif i == 8:
-            love = 'Nami'
-        else:
-            love = 'Makima'
-#window 1 title
-window1 = tk.Tk()
-window1.title('Welcome')
-window1.geometry ('300x75')
-#window 1 prompt
-window1_label = ttk.Label(master = window1, text = 'What is your name?')
-window1_label.pack()
-#window 1 name entry text box
-name = tk.StringVar()
-name_entry = ttk.Entry(master = window1, textvariable = name)
-name_entry.pack()
-#The button that stores variable name_entry
-window1_button = ttk.Button(master = window1, text = 'Enter', command = name_button)
-window1_button.pack()
-window1.mainloop()
+            # Open quiz window
+            self.Preference += 20
+            quiz_window = tk.Toplevel(self.master)
+            quiz_window.title("Answer with Yes or No")
+            answer_entries = []
 
-#window 2 title
-window2 = tk.Tk()
-window2.title('My Anime Crush')
-window2.geometry('300x300')
-#window 2 prompt
-window2_label = ttk.Label(master = window2, text = 'Hello')
-window2_label.pack()
-window2_label2 = ttk.Label(master = window2, text = 'None')
-window2_label3 = ttk.Label(master = window2, text = 'Which would you like to know?')
-window2_label3.pack()
-#window 2 button 1
-window2_button1 = ttk.Button(master = window2, text = 'My dream Waifu', command = result_waifu)
-window2_button1.pack()
-#window 2 button 1
-window2_button2 = ttk.Button(master = window2, text = 'My dream Husbando', command = result_husbando)
-window2_button2.pack()
-#window 2 secret button
-window2_button3 = ttk.Button(master = window2, text = 'Eww neither', command = result_secret)
-window2_button3.pack()
-window
+            # Create labels for questions and entry widgets for answers
+            for i in range(10):
+                question_label = tk.Label(quiz_window, text=self.questions[i])
+                question_label.pack(pady=5)
 
-window3 = tk.Tk()
-window3.geometry ('300x75')
-window3_label = ttk.Label(master = window3, text = 'Does honesty Matter?')
-window3_label.pack()
-window3_button1 = ttk.Button(master = window3, text = 'Everyone lies sometimes', command = lambda: [red_flag(), next_question1()])
-window3_button2 = ttk.Button(master = window3, text = 'Honesty is my middle name', command = next_question1)
+                answer_entry = tk.Entry(quiz_window)
+                answer_entry.pack(pady=5)
+                answer_entries.append(answer_entry)
 
-window4 = tk.Tk()
-window4.geometry ('300x75')
-window4_label = ttk.Label(master = window3, text = 'Do looks matter?')
-window4_label.pack()
-window4_button1 = ttk.Button(master = window3, text = 'We slay always', command = lambda:[red_flag(), next_question2()])
-window4_button2 = ttk.Button(master = window3, text = 'Personality is more important tbh', command = next_question2)
+            # Create a button to submit answers
+            submit_button = tk.Button(quiz_window, text="Submit Answers", command=lambda: self.check_answers(answer_entries))
+            submit_button.pack(pady=10)
 
-window5 = tk.Tk()
-window5.geometry ('300x75')
-window5_label = ttk.Label(master = window3, text = 'Could you live without luxuries?')
-window5_label.pack()
-window5_button1 = ttk.Button(master = window3, text = 'I work hard for my things', command = lambda: [red_flag(), next_question3()])
-window5_button2 = ttk.Button(master = window3, text = 'Money cant buy happiness', command = next_question3)
+    def waifu_preference(self):
+        #sets the preference to waifu if so desired
+        self.Preference += 10
 
-window6 = tk.Tk()
-window6.geometry ('300x75')
-window6_label = ttk.Label(master = window3, text = 'Which word is more appealing?')
-window6_label.pack()
-window6_button1 = ttk.Button(master = window3, text = 'Cute', command = next_question4)
-window6_button2 = ttk.Button(master = window3, text = 'Cool', command = lambda: [red_flag(), next_question4()])
+    def check_answers(self, answer_entries):
+        # Check user answers and update correct_count
+        for i in range(10):
+            user_answer = answer_entries[i].get()
+            correct_answer = str(self.answers[i])
 
-window7 = tk.Tk()
-window7.geometry ('300x75')
-window7_label = ttk.Label(master = window3, text = 'Is it important for your SO to remain calm always?')
-window7_label.pack()
-window7_button1 = ttk.Button(master = window3, text = 'Yes I deserve better', command = lambda: [red_flag(), next_question5()])
-window7_button2 = ttk.Button(master = window3, text = 'Nobody is perfect', command = next_question5)
+            if user_answer.lower() == correct_answer.lower():
+                self.correct_count += 1
 
-window8 = tk.Tk()
-window8.geometry ('300x75')
-window8_label = ttk.Label(master = window3, text = 'Are good and evil always clearly defined?')
-window8_label.pack()
-window8_button1 = ttk.Button(master = window3, text = 'Its based on perspective', command = next_question6)
-window8_button2 = ttk.Button(master = window3, text = 'Evil is evil no matter what', command = lambda: [red_flag(), next_question6()])
+        # Display results
+        self.display_results()
 
-window9 = tk.Tk()
-window9.geometry ('300x75')
-window9_label = ttk.Label(master = window3, text = 'Would you commit a crime to for your SO?')
-window9_label.pack()
-window9_button1 = ttk.Button(master = window3, text = 'Ride or die', command = lambda: [red_flag(), next_question7])
-window9_button2 = ttk.Button(master = window3, text = 'If they really loved me they wouldnt make me do that', command = next_question7)
+    def show_preference(self):
+        #Variable that retieves results from Preference List and Description List
+        self.result = self.correct_count + self.Preference 
 
-window10 = tk.Tk()
-window10.geometry ('300x75')
-window10_label = ttk.Label(master = window3, text = 'Is reeaching your goals more important than your love life?')
-window10_label.pack()
-window10_button1 = ttk.Button(master = window3, text = 'Success first, love comes later', command = next_question8)
-window10_button2 = ttk.Button(master = window3, text = 'Well if they are the one...', command = lambda:[red_flag(), next_question8()])
-
-window11 = tk.Tk()
-window11.geometry ('300x75')
-window11_label = ttk.Label(master = window3, text = 'Do you want to or do you have children?')
-window11_label.pack()
-window11_button1 = ttk.Button(master = window3, text = 'Yes', command = lambda: [red_flag(), next_question9()] )
-window11_button2 = ttk.Button(master = window3, text = 'No', command = next_question9)
-
-window12 = tk.Tk()
-window12.geometry ('300x75')
-window12_label = ttk.Label(master = window3, text = 'Honestly though does the other persons sex really matter?')
-window12_label.pack()
-window12_button1 = ttk.Button(master = window3, text = 'Yes', command = lambda: [red_flag(), end_quiz()])
-window12_button2 = ttk.Button(master = window3, text = 'No', command = end_quiz)
-
-result_window = tk.Tk()
-result_window_label1 = ttk.Label(master = result_window, text = 'Your perfect anime match is')
-result_window_label1.pack()
-result_window_label2 = ttk.Label(master = result_window, text = result_answer)
+    def display_results(self):
+        # Display the quiz results in a messagebox
+        self.show_preference()
+        messagebox.showinfo(
+            self.DescriptionsList[self.result],
+            f"Congratulations {self.name_var.get()} your perfect anime match is {self.PreferenceList[self.result]}")
+        self.master.destroy()
+        
+#Executes program
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = QuizApp(root)
+    root.mainloop()
