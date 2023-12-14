@@ -1,0 +1,21 @@
+*To run Project_final(full_version).py you must install Pillow
+*You do not need to follow these instructions to run Project_final.py
+>open command prompt
+C:\Users\(User Name)>pip install pillow
+---------------------^*What you are adding
+>for mac users
+C:\Users\(User Name)>pip3 install pillow
+>next you update PIL
+>in command prompt enter this sequence
+C:\Users\(User Name)>pip install --upgrade pip
+>next you find the working directory (if you don't already know it)
+>open a new python file and insert the following code
+import os
+
+# get the current working directory
+current_working_directory = os.getcwd()
+
+# print output to the console
+print(current_working_directory)
+>once you know the working directory highlight all the image files in final project and paste them to into that folder
+>if all the previous steps were completed properly you should be able to run Project_final(full_version).py
